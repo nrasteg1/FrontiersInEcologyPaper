@@ -1,0 +1,243 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+Change the abreviations
+
+
+
+Library 
+```{r}
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(gridExtra)
+```
+
+Read in Docs
+```{r}
+Bmore <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\R2_Recalculate.csv")
+Mon2020 <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\Monitor_2020.csv")
+MonWebs <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\Air_Mon_Recalculate.csv")
+AADT <- read.csv("C:/Users/Nava/OneDrive/Documents/Desktop/GitHub/nrastegthesis/AADT_INF_STA.csv")
+```
+
+Summary
+
+```{r}
+Mon2020S <- Mon2020 %>% group_by(Site)
+Monsump <- Mon2020S %>% summarise(
+  Alper = mean(Al., na.rm= TRUE),
+  Alpersd = sd(Al., na.rm= TRUE),
+  Feper = mean(Fe., na.rm=TRUE),
+  Fepersd = sd(Fe., na.rm= TRUE),
+  Pbper = mean(Pb., na.rm=TRUE),
+  Pbpersd = sd(Pb., na.rm= TRUE)
+)
+Monsump$Site <- gsub("HU", "HU Beltsville", Monsump$Site)
+Monsump$Site <- gsub("ES", "Essex", Monsump$Site)
+
+
+Mon2020S <- Mon2020 %>% group_by(Site)
+Monsums <- Mon2020S %>% summarise(
+  Almean = mean(Al, na.rm= TRUE),
+  Alsd = sd(Al, na.rm= TRUE),
+  Femean = mean(Fe, na.rm=TRUE),
+  Fesd = sd(Fe, na.rm= TRUE),
+  Pbmean = mean(Pb, na.rm=TRUE),
+  Pbsd = sd(Pb, na.rm= TRUE),
+  PMmean= mean(PM, na.rm=TRUE),
+  PMsd = sd(PM, na.rm=TRUE)
+)
+
+Monsums$Site <- gsub("HU", "HU Beltsville", Monsums$Site)
+Monsums$Site <- gsub("ES", "Essex", Monsums$Site)
+
+MonwebS <- MonWebs %>% group_by(Area)
+Websum <- MonwebS %>% summarise(
+  Alper = mean(Al_perc_day, na.rm= TRUE),
+  Alpersd = sd(Al_perc_day, na.rm= TRUE),
+  Feper = mean(Fe_Perc_Day, na.rm=TRUE),
+  Fepersd = sd(Fe_Perc_Day, na.rm= TRUE),
+  Pbper = mean(Pb_Perc_Day, na.rm=TRUE),
+  Pbpersd = sd(Pb_Perc_Day, na.rm= TRUE)
+)
+
+Websum$Area <- gsub("HU", "HU Beltsville", Websum$Area)
+Websum$Area <- gsub("ES", "Essex", Websum$Area)
+
+```
+
+
+```{r}
+BmoreG<- Bmore %>% group_by(Neighborhood)
+BmoreSum <- BmoreG %>% summarise(
+  Alper = mean(Al_per_day, na.rm= TRUE),
+  Alpersd = sd(Al_per_day, na.rm= TRUE),
+  Feper = mean(Fe_per_day, na.rm=TRUE),
+  Fepersd = sd(Fe_per_day, na.rm= TRUE),
+  Pbper = mean(Pb_per_day, na.rm=TRUE),
+  Pbpersd = sd(Pb_per_day, na.rm= TRUE)
+)
+
+BmoreSum$Neighborhood <- gsub("BK", "Brooklyn", BmoreSum$Neighborhood)
+BmoreSum$Neighborhood <- gsub("CB", "Curtis Bay", BmoreSum$Neighborhood)
+```
+
+Plot of baltimore values 
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebsfe.jpg", width = 1000, height = 600)
+# 2. Create the plot
+# First row with scatter plot
+ggplot(BmoreSum, aes(x=Neighborhood, y=Feper)) +
+    geom_bar( aes(x=Neighborhood, y=Feper), stat="identity", fill="firebrick", alpha=1) +
+  geom_linerange( aes(x=Neighborhood, ymin=Feper- Fepersd, ymax=Feper + Fepersd), colour="springgreen3", alpha=1, size=1.3)+
+    xlab("") +
+            geom_text(aes(label="*"), position = position_nudge(.05), vjust = -.05, size=15)+
+  ylab ("% Fe in webs per day") +
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray')) + 
+  theme(text=element_text(size= 35,  family="TT Arial"))
+dev.off()
+```
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebsal.jpg", width = 1000, height = 600)
+# 2. Create the plot
+# First row with scatter plot
+ ggplot(BmoreSum, aes(x=Neighborhood, y=Alper)) +
+    geom_bar( aes(x=Neighborhood, y=Alper), stat="identity", fill="deepskyblue", alpha=1) +
+  geom_linerange( aes(x=Neighborhood, ymin=Alper- Alpersd, ymax=Alper + Alpersd), colour="orange", alpha=1, size=1.3) +
+    xlab("") +
+  ylab ("% Al in webs per day") +
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray')) + 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebspb.jpg", width = 1000, height = 600)
+# 2. Create the plot
+# First row with scatter plot
+ ggplot(BmoreSum, aes(x=Neighborhood, y=Pbper)) +
+    geom_bar( aes(x=Neighborhood, y=Pbper), stat="identity", fill="darkorchid", alpha=1) +
+  geom_linerange( aes(x=Neighborhood, ymin=Pbper- Pbpersd, ymax=Pbper + Pbpersd), colour="deeppink", alpha=1, size=1.3) +
+    xlab("") +
+  ylab ("% Pb in webs per day") +
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray')) + 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+
+```
+
+Plot of PM values 
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monPM.jpg", width = 1000, height = 600)
+MonsumPM <- Monsums %>% add_row(Site= "Baltimore", PMmean = 7.0, PMsd = 3.9)
+ggplot(MonsumPM) +
+  geom_bar( aes(x=Site, y=PMmean), stat="identity", fill="gold2", alpha=1) +
+  geom_linerange( aes(x=Site, ymin=PMmean-PMsd, ymax=PMmean+PMsd), colour="black", alpha=1, size=1.3)+
+  theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  xlab("") + ylab("PM 2.5 (µg/m3)")+
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+Plot of monitor percents
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monPb.jpg", width = 1000, height = 600)
+ ggplot(Monsump) +
+  geom_bar( aes(x=Site, y=Pbper), stat="identity", fill="darkorchid", alpha=1) +
+  geom_linerange( aes(x=Site, ymin=Pbper- Pbpersd, ymax=Pbper+Pbpersd), colour="deeppink", alpha=1, size=1.3)+
+  xlab("") +
+  ylab ("% Pb in PM 2.5") +
+  theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monAl.jpg", width = 1000, height = 600)
+ggplot(Monsump) +
+  geom_bar( aes(x=Site, y=Alper), stat="identity", fill="deepskyblue", alpha=1) +
+  geom_linerange( aes(x=Site, ymin=Alper- Alpersd, ymax=Alper+Alpersd), colour="orange", alpha=1, size=1.3)+
+  xlab("") +
+  ylab ("% Al in PM 2.5") +
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monFe.jpg", width = 1000, height = 600)
+ggplot(Monsump, aes(x=Site, y=Feper)) +
+  geom_bar( aes(x=Site, y=Feper), stat="identity", fill="firebrick", alpha=1) +
+  geom_linerange( aes(x=Site, ymin=Feper- Fepersd, ymax=Feper+Fepersd), colour="springgreen3", alpha=1, size=1.3) +
+  xlab("") +
+  ylab ("% Fe in PM 2.5") +
+       geom_text(aes(label="*"), position = position_nudge(.05), vjust = -.05, size=15)+
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monFe.jpg", width = 1000, height = 600)
+ggplot(Monsump, aes(x=Site, y=Feper)) +
+  geom_bar( aes(x=Site, y=Feper), stat="identity", fill="firebrick", alpha=1) +
+  geom_linerange( aes(x=Site, ymin=Feper- Fepersd, ymax=Feper+Fepersd), colour="springgreen3", alpha=1, size=1.3) +
+  xlab("") +
+  ylab ("% Fe in PM 2.5") +
+       geom_text(aes(label="*"), position = position_nudge(.05), vjust = -.05, size=15)+
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+
+Plot of web values
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebAl.jpg", width = 1000, height = 600)
+ggplot(Websum, aes(x=Area, y=Alper)) +
+  geom_bar( aes(x=Area, y=Alper), stat="identity", fill="deepskyblue", alpha=1) +
+  geom_linerange( aes(x=Area, ymin=Alper- Alpersd, ymax=Alper+Alpersd), colour="orange", alpha=1, size=1.3) +
+  xlab("") +
+  ylab ("% Al in webs by day") +
+   geom_text(aes(label="*"), position = position_nudge(.05), vjust = -.05, size=15)+
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+dev.off()
+```
+
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebFe.jpg", width = 1000, height = 600)
+
+ ggplot(Websum) +
+  geom_bar( aes(x=Area, y=Feper), stat="identity", fill="firebrick", alpha=1) +
+  geom_linerange( aes(x=Area, ymin=Feper- Fepersd, ymax=Feper+Fepersd), colour="springgreen3", alpha=1, size=1.3) +
+  xlab("") +
+  ylab ("% Fe in webs by day") +
+     theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+ dev.off()
+
+```
+
+```{r}
+jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebPb.jpg", width = 1000, height = 600)
+ggplot(Websum, aes(x=Area, y=Pbper)) +
+  geom_bar( aes(x=Area, y=Pbper), stat="identity", fill="darkorchid", alpha=1) +
+  geom_linerange( aes(x=Area, ymin=Pbper- Pbpersd, ymax=Pbper+Pbpersd), colour="deeppink", alpha=1, size=1.3) +
+  xlab("") +
+  ylab ("% Pb in webs by day") +
+  geom_text(aes(label="*"), position = position_nudge(.05), vjust = -.05, size=15)+
+  theme(panel.background = element_rect(fill = 'white', colour = 'gray'))+ 
+  theme(text=element_text(size=35,  family="TT Arial"))
+ dev.off()
+
+```
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
