@@ -1,0 +1,214 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+---
+
+
+```{r}
+library(dplyr)
+library(EnvStats)
+library(devtools)
+library(githubinstall)
+library(agricolae)
+library(gtools)
+```
+
+```{r}
+MonWebs <- read.csv("C:\\Users\\student\\Downloads\\FIEE paper\\FIEE paper\\monitor_webs.csv")
+
+Bmore <- read.csv("C:\\Users\\student\\Downloads\\FIEE paper\\FIEE paper\\bmore_webs.csv")
+
+MonWebs0 <- read.csv("C:\\Users\\student\\Downloads\\FIEE paper\\FIEE paper\\air_mon_0.csv")
+
+Bmore0 <- read.csv("C:\\Users\\student\\Downloads\\FIEE paper\\FIEE paper\\bmore_0.csv")
+
+Mon2020 <- read.csv("C:\\Users\\Nava\\Downloads\\MyResearch\\MonitorData\\PM2020.csv")
+
+R1_R2 <- read.csv("C:\\Users\\student\\Downloads\\FIEE paper\\FIEE paper\\R2_R1.csv")
+
+full_bmore <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\full_bmore")
+
+```
+
+
+Monitor PM significance
+
+Not Sig
+```{r}
+t.test(Mon2020$PM ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$PM)
+```
+
+Monitor with all PM 
+
+Not sig 
+```{r}
+monPMlm <- lm(Mon2020$Data.sample_measurement~ Mon2020$Site)
+anova(monPMlm)
+```
+```{r}
+hist(Mon2020$Data.sample_measurement)
+```
+
+Al RAW Not sig
+```{r}
+t.test(Mon2020$Al ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$Al)
+```
+Al % Not sig
+```{r}
+t.test(Mon2020$Al. ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$Al.)
+```
+Pb RAW not sig
+```{r}
+t.test(Mon2020$Pb ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$Pb)
+```
+
+Pb % not sig
+```{r}
+t.test(Mon2020$Pb. ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$Pb.)
+```
+Fe Not sig
+```{r}
+t.test(Mon2020$Fe ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$Fe)
+```
+Fe percent- sig, HU higher 
+```{r}
+t.test(Mon2020$Fe. ~ Mon2020$Site, method="spearmans")
+```
+
+```{r}
+hist(Mon2020$Fe.)
+```
+
+Web Monitor UNTRANSFORMED 
+Al- sig
+ES higher
+
+```{r}
+t.test(MonWebs$Al_perc_day~ MonWebs$Area, method="spearman" )
+```
+
+```{r}
+hist(MonWebs$Al_perc_day)
+```
+
+Pb- sig
+ES Higher 
+```{r}
+t.test(MonWebs$Pb_Perc_Day~ MonWebs$Area, method="spearman" )
+```
+```{r}
+hist(MonWebs$Pb_Perc_Day)
+```
+
+Fe Not sig
+HU higher
+```{r}
+t.test(MonWebs$Fe_Perc_Day~ MonWebs$Area, method="spearman" )
+
+```
+
+```{r}
+hist(MonWebs$Fe_Perc_Day)
+```
+
+Baltimore webs percent untransformed
+
+Al- not sig
+```{r}
+t.test(Bmore$Al_per_day~ Bmore$Neighborhood, method="spearman" )
+```
+
+```{r}
+hist(Bmore$Al_per_day)
+```
+Fe- Sig
+```{r}
+t.test(Bmore$Fe_per_day~ Bmore$Neighborhood, method="spearman" )
+```
+
+```{r}
+hist(Bmore$Fe_per_day)
+```
+Pb- not Sig
+```{r}
+t.test(Bmore$Pb_per_day~ Bmore$Neighborhood, method="spearman" )
+```
+
+```{r}
+hist(Bmore$Pb_per_day)
+```
+
+UNTRANSFORMED WITH 0s
+Bmore
+
+Fe- Sig, BK larger
+```{r}
+t.test(Bmore0$Fe_per_day~ Bmore0$Neighborhood, method="spearman" )
+```
+Pb- not sig, BK higher
+```{r}
+t.test(Bmore0$Pb_per_day~ Bmore0$Neighborhood, method="spearman" )
+```
+Al- not sig, Bk larger
+```{r}
+t.test(Bmore0$Al_per_day~ Bmore0$Neighborhood, method="spearman" )
+```
+
+
+
+R2_R1 comparison
+
+
+```{r}
+t.test(R1_R2$Pb_Percent, R1_R2$PbPerc, method="spearmans")
+```
+Fe sig
+```{r}
+t.test(R1_R2$Fe_Percent, R1_R2$FePerc, method="spearmans")
+```
+Pb not sig 
+```{r}
+t.test(R1_R2$Al_Percent, R1_R2$AlPerc, method="spearmans")
+```
+Sig, x higher 
+```{r}
+t.test(R1_R2$Weight, R1_R2$Weight.mL, method="spearmans")
+```
+AADT COMP
+no significant difference in aadt mean
+```{r}
+t.test(full_bmore$AADT_mean~full_bmore$Neighborhood, method="spearmans")
+```
+
+```{r}
+t.test(full_bmore$AADT_max~full_bmore$Neighborhood, method="spearmans")
+```
+
