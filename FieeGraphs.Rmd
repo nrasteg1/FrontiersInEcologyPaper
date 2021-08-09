@@ -18,10 +18,10 @@ library(gridExtra)
 
 Read in Docs
 ```{r}
-Bmore <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\R2_Recalculate.csv")
-Mon2020 <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\Monitor_2020.csv")
-MonWebs <- read.csv("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\GitHub\\nrastegthesis\\Air_Mon_Recalculate.csv")
-AADT <- read.csv("C:/Users/Nava/OneDrive/Documents/Desktop/GitHub/nrastegthesis/AADT_INF_STA.csv")
+Bmore <- read.csv("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/R2_Recalculate.csv")
+Mon2020 <- read.csv("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/Mon2020all.csv")
+MonWebs <- read.csv("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/Air_Mon_Recalculate.csv")
+AADT <- read.csv("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/AADT_INF_STA.csv")
 ```
 
 Summary
@@ -48,8 +48,8 @@ Monsums <- Mon2020S %>% summarise(
   Fesd = sd(Fe, na.rm= TRUE),
   Pbmean = mean(Pb, na.rm=TRUE),
   Pbsd = sd(Pb, na.rm= TRUE),
-  PMmean= mean(PM, na.rm=TRUE),
-  PMsd = sd(PM, na.rm=TRUE)
+  PMmean= mean(PM2.5, na.rm=TRUE),
+  PMsd = sd(PM2.5, na.rm=TRUE)
 )
 
 Monsums$Site <- gsub("HU", "HU Beltsville", Monsums$Site)
@@ -88,7 +88,7 @@ BmoreSum$Neighborhood <- gsub("CB", "Curtis Bay", BmoreSum$Neighborhood)
 
 Plot of baltimore values 
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebsfe.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/bmorewebsfe.jpg", width = 1000, height = 600)
 # 2. Create the plot
 # First row with scatter plot
 ggplot(BmoreSum, aes(x=Neighborhood, y=Feper)) +
@@ -102,7 +102,7 @@ ggplot(BmoreSum, aes(x=Neighborhood, y=Feper)) +
 dev.off()
 ```
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebsal.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/bmorewebsal.jpg", width = 1000, height = 600)
 # 2. Create the plot
 # First row with scatter plot
  ggplot(BmoreSum, aes(x=Neighborhood, y=Alper)) +
@@ -115,7 +115,7 @@ jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebsal.jpg
 dev.off()
 ```
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\bmorewebspb.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/bmorewebspb.jpg", width = 1000, height = 600)
 # 2. Create the plot
 # First row with scatter plot
  ggplot(BmoreSum, aes(x=Neighborhood, y=Pbper)) +
@@ -131,7 +131,7 @@ dev.off()
 
 Plot of PM values 
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monPM.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/monPM.jpg", width = 1000, height = 600)
 MonsumPM <- Monsums %>% add_row(Site= "Baltimore", PMmean = 7.0, PMsd = 3.9)
 ggplot(MonsumPM) +
   geom_bar( aes(x=Site, y=PMmean), stat="identity", fill="gold2", alpha=1) +
@@ -143,7 +143,7 @@ dev.off()
 ```
 Plot of monitor percents
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monPb.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/monPb.jpg", width = 1000, height = 600)
  ggplot(Monsump) +
   geom_bar( aes(x=Site, y=Pbper), stat="identity", fill="darkorchid", alpha=1) +
   geom_linerange( aes(x=Site, ymin=Pbper- Pbpersd, ymax=Pbper+Pbpersd), colour="deeppink", alpha=1, size=1.3)+
@@ -154,7 +154,7 @@ jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monPb.jpg", wid
 dev.off()
 ```
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monAl.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/monAl.jpg", width = 1000, height = 600)
 ggplot(Monsump) +
   geom_bar( aes(x=Site, y=Alper), stat="identity", fill="deepskyblue", alpha=1) +
   geom_linerange( aes(x=Site, ymin=Alper- Alpersd, ymax=Alper+Alpersd), colour="orange", alpha=1, size=1.3)+
@@ -166,7 +166,7 @@ dev.off()
 ```
 
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monFe.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/monFe.jpg", width = 1000, height = 600)
 ggplot(Monsump, aes(x=Site, y=Feper)) +
   geom_bar( aes(x=Site, y=Feper), stat="identity", fill="firebrick", alpha=1) +
   geom_linerange( aes(x=Site, ymin=Feper- Fepersd, ymax=Feper+Fepersd), colour="springgreen3", alpha=1, size=1.3) +
@@ -179,7 +179,7 @@ dev.off()
 ```
 
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\monFe.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/monFe.jpg", width = 1000, height = 600)
 ggplot(Monsump, aes(x=Site, y=Feper)) +
   geom_bar( aes(x=Site, y=Feper), stat="identity", fill="firebrick", alpha=1) +
   geom_linerange( aes(x=Site, ymin=Feper- Fepersd, ymax=Feper+Fepersd), colour="springgreen3", alpha=1, size=1.3) +
@@ -193,7 +193,7 @@ dev.off()
 
 Plot of web values
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebAl.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/WebAl.jpg", width = 1000, height = 600)
 ggplot(Websum, aes(x=Area, y=Alper)) +
   geom_bar( aes(x=Area, y=Alper), stat="identity", fill="deepskyblue", alpha=1) +
   geom_linerange( aes(x=Area, ymin=Alper- Alpersd, ymax=Alper+Alpersd), colour="orange", alpha=1, size=1.3) +
@@ -206,7 +206,7 @@ dev.off()
 ```
 
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebFe.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/WebFe.jpg", width = 1000, height = 600)
 
  ggplot(Websum) +
   geom_bar( aes(x=Area, y=Feper), stat="identity", fill="firebrick", alpha=1) +
@@ -220,7 +220,7 @@ jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebFe.jpg", wid
 ```
 
 ```{r}
-jpeg("C:\\Users\\Nava\\OneDrive\\Documents\\Desktop\\FIEE paper\\WebPb.jpg", width = 1000, height = 600)
+jpeg("C://Users/nrast/OneDrive/Documents/GitHub/FrontiersInEcologyPaper/WebPb.jpg", width = 1000, height = 600)
 ggplot(Websum, aes(x=Area, y=Pbper)) +
   geom_bar( aes(x=Area, y=Pbper), stat="identity", fill="darkorchid", alpha=1) +
   geom_linerange( aes(x=Area, ymin=Pbper- Pbpersd, ymax=Pbper+Pbpersd), colour="deeppink", alpha=1, size=1.3) +
